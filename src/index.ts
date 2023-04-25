@@ -5,8 +5,10 @@ const app = express();
 import bodyParser from 'body-parser';
 import config from "./config";
 import connectToDb from "./config/db";
-import  {verifyToken} from './middleware/authJwt'
 import cors from 'cors';
+
+var cron = require('node-cron');
+import {CronHelper} from './helpers/cron.helpers';
 connectToDb()
   .then(async () => {
     app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,6 +41,22 @@ connectToDb()
       });
     });
 
+
+    cron.schedule('5 * * * *', () => {
+      console.log("running generate news cron every  minutes.", '');
+      CronHelper.generatePlantFinderJSON();
+  });
+  //  // Schedule Cron
+  //  cron.schedule('*/24 * * *', () => {
+  //     console.log("running generate news cron every 120 minutes.", '');
+  //     CronHelper.generatePlantFinderJSON();
+  //   });
+  
+  //   // Schedule Cron
+  //   cron.schedule('0 5 * * *', () => {
+  //    console.log("running generate news cron every everyday at 5 AM.", '');
+  //     CronHelper.generatePlantFinderJSON();
+  //   });
     app.listen(config.SERVER_PORT, (): void => {
       console.log("server is running on " + config.SERVER_PORT);
     });

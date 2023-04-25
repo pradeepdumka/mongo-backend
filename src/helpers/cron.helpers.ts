@@ -5,7 +5,11 @@ export const CronHelper  = {
     generatePlantFinderJSON: async () => {
        
         try {
-            let newsData = await fetch('https://newsapi.org/v2/everything?q=tesla&from=2023-03-22&sortBy=publishedAt&apiKey=d642e007ab4e4cbfbeb6add24e55cef9');
+            var currentdate = new Date();
+
+    var datetime =  currentdate.getFullYear() + "/"+(currentdate.getMonth()+1) + "/" + currentdate.getDate() ;
+    console.log(datetime)
+            let newsData = await fetch('https://newsapi.org/v2/everything?q=tesla&from=2023-04-24&to=2023-04-24&sortBy=popularity&apiKey=d642e007ab4e4cbfbeb6add24e55cef9');
             let response = await newsData.json();
             console.log(response)
             if(response && response.status == 'ok'){
